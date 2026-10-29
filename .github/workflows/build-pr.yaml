@@ -10,7 +10,7 @@ on:
         required: true
 
 env:
-  CONTAINER_REGISTRY: ghcr.io/Dynatrace-Technical-Learning-Material/easytradeTLS
+  CONTAINER_REGISTRY: ghcr.io/dynatrace-technical-learning-material/easytradetls
   # HELM_CHART_PATH: helm/easytrade
 
 jobs:

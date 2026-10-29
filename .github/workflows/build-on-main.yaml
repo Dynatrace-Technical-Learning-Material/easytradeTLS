@@ -33,7 +33,7 @@ on:
 env:
   # GAR_ADDRESS: N/A
   NAMESPACE: easytrade
-  CONTAINER_REGISTRY: ghcr.io/Dynatrace-Technical-Learning-Material/easytradeTLS
+  CONTAINER_REGISTRY: ghcr.io/dynatrace-technical-learning-material/easytradetls
   # HELM_REGISTRY: N/A
   # HELM_CHART_PATH: N/A
 
