@@ -31,21 +31,21 @@ on:
         required: true
 
 env:
-  GAR_ADDRESS: europe-docker.pkg.dev
+  # GAR_ADDRESS: N/A
   NAMESPACE: easytrade
-  CONTAINER_REGISTRY: europe-docker.pkg.dev/dynatrace-demoability/docker/easytrade
-  HELM_REGISTRY: oci://europe-docker.pkg.dev/dynatrace-demoability/helm
-  HELM_CHART_PATH: helm/easytrade
+  CONTAINER_REGISTRY: ghcr.io/Dynatrace-Technical-Learning-Material/easytradeTLS
+  # HELM_REGISTRY: N/A
+  # HELM_CHART_PATH: N/A
 
 jobs:
-  snyk:
-    uses: ./.github/workflows/reusable-snyk.yaml
-    permissions:
-      security-events: write
-      contents: read
-      actions: read
-    secrets:
-      SNYK_API_TOKEN: ${{ secrets.SNYK_API_TOKEN }}
+  # snyk:
+  #   uses: ./.github/workflows/reusable-snyk.yaml
+  #   permissions:
+  #     security-events: write
+  #     contents: read
+  #     actions: read
+  #   secrets:
+  #     SNYK_API_TOKEN: ${{ secrets.SNYK_API_TOKEN }}
 
   calc-version:
     uses: ./.github/workflows/reusable-calc-version.yaml
@@ -61,10 +61,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Login to Google Artifact Registry
-        run: |
-          echo "${{ secrets.GAR_CREDENTIALS }}" | \
-            docker login -u _json_key_base64 --password-stdin "${{ env.GAR_ADDRESS }}"
+      # - name: Login to Google Artifact Registry
+      #   run: |
+      #     echo "${{ secrets.GAR_CREDENTIALS }}" | \
+      #       docker login -u _json_key_base64 --password-stdin "${{ env.GAR_ADDRESS }}"
 
       - name: Set application version
         uses: ./.github/actions/set-version
@@ -82,26 +82,26 @@ jobs:
           artifact-name: docker-compose
           artifact-dir: ./build-artifacts/
 
-      - name: Build and push Helm chart
-        uses: ./.github/actions/build-push-helm
-        with:
-          chart-path: ${{ env.HELM_CHART_PATH }}
-          push: true
-          registry-url: oci://europe-docker.pkg.dev/dynatrace-demoability/helm
-          version: ${{ needs.calc-version.outputs.version }}
-          credentials: ${{ secrets.GAR_CREDENTIALS }}
+      # - name: Build and push Helm chart
+      #   uses: ./.github/actions/build-push-helm
+      #   with:
+      #     chart-path: ${{ env.HELM_CHART_PATH }}
+      #     push: true
+      #     registry-url: oci://europe-docker.pkg.dev/dynatrace-demoability/helm
+      #     version: ${{ needs.calc-version.outputs.version }}
+      #     credentials: ${{ secrets.GAR_CREDENTIALS }}
 
-  promote:
-    if: needs.calc-version.outputs.is-release == 'true'
-    needs:
-      - calc-version
-      - build-push-easytrade
-    permissions:
-      contents: write
-      actions: write
-    uses: ./.github/workflows/reusable-promote-release.yaml
-    with:
-      version: ${{ needs.calc-version.outputs.version }}
-      trigger-deploy: false
-      artifact-name: ${{ needs.build-push-easytrade.outputs.artifact-name }}
-      artifact-dir: ${{ needs.build-push-easytrade.outputs.artifact-dir }}
+  # promote:
+  #   if: needs.calc-version.outputs.is-release == 'true'
+  #   needs:
+  #     - calc-version
+  #     - build-push-easytrade
+  #   permissions:
+  #     contents: write
+  #     actions: write
+  #   uses: ./.github/workflows/reusable-promote-release.yaml
+  #   with:
+  #     version: ${{ needs.calc-version.outputs.version }}
+  #     trigger-deploy: false
+  #     artifact-name: ${{ needs.build-push-easytrade.outputs.artifact-name }}
+  #     artifact-dir: ${{ needs.build-push-easytrade.outputs.artifact-dir }}
