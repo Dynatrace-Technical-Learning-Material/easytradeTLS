@@ -53,6 +53,9 @@ jobs:
   build-push-easytrade:
     if: needs.calc-version.outputs.already-released == 'false'
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
     needs: calc-version
     outputs:
       artifact-dir: ${{ steps.build-and-push.outputs.artifact-dir }}
