@@ -49,7 +49,7 @@ jobs:
 
   calc-version:
     uses: ./.github/workflows/reusable-calc-version.yaml
-
+# 1.0
   build-push-easytrade:
     if: needs.calc-version.outputs.already-released == 'false'
     runs-on: ubuntu-24.04
